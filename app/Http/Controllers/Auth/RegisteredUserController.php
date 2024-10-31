@@ -49,8 +49,8 @@ class RegisteredUserController extends Controller
             'old_month' => 'required|integer|between:1,12',
             'old_day' => 'required|integer|between:1,31',
             'role' =>'required|in:講師(国語),講師(数学),教師(英語),生徒',
-            'password' =>'required|between:8,30|confirmed',
-        ]);
+            'password' =>'required|between:8,30|confirmed',],
+        );
 
         DB::beginTransaction();
         try{

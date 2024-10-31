@@ -4,40 +4,64 @@
       <div class="w-25 vh-75 border p-3">
         <div class="register_form">
           <div class="d-flex mt-3" style="justify-content:space-between">
+
             <div class="" style="width:140px">
               <label class="d-block m-0" style="font-size:13px">姓</label>
               <div class="border-bottom border-primary" style="width:140px;">
                 <input type="text" style="width:140px;" class="border-0 over_name" name="over_name">
               </div>
+              @error('over_name')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+              @enderror
             </div>
+
             <div class="" style="width:140px">
               <label class=" d-block m-0" style="font-size:13px">名</label>
               <div class="border-bottom border-primary" style="width:140px;">
                 <input type="text" style="width:140px;" class="border-0 under_name" name="under_name">
               </div>
+              @error('under_name')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+              @enderror
             </div>
+
           </div>
+
           <div class="d-flex mt-3" style="justify-content:space-between">
             <div class="" style="width:140px">
               <label class="d-block m-0" style="font-size:13px">セイ</label>
               <div class="border-bottom border-primary" style="width:140px;">
                 <input type="text" style="width:140px;" class="border-0 over_name_kana" name="over_name_kana">
               </div>
+              @error('over_name_kana')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+              @enderror
             </div>
+
             <div class="" style="width:140px">
               <label class="d-block m-0" style="font-size:13px">メイ</label>
               <div class="border-bottom border-primary" style="width:140px;">
                 <input type="text" style="width:140px;" class="border-0 under_name_kana" name="under_name_kana">
               </div>
+              @error('under_name_kana')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+              @enderror
             </div>
+
           </div>
+
           <div class="mt-3">
             <label class="m-0 d-block" style="font-size:13px">メールアドレス</label>
             <div class="border-bottom border-primary">
               <input type="mail" class="w-100 border-0 mail_address" name="mail_address">
             </div>
+            @error('mail_address')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+              @enderror
           </div>
+
         </div>
+
         <div class="mt-3">
           <input type="radio" name="sex" class="sex" value="1">
           <label style="font-size:13px">男性</label>
@@ -150,18 +174,27 @@
           </div>
           @endforeach
         </div>
+
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">パスワード</label>
           <div class="border-bottom border-primary">
             <input type="password" class="border-0 w-100 password" name="password">
           </div>
+          @error('password')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+          @enderror
         </div>
+
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">確認用パスワード</label>
           <div class="border-bottom border-primary">
             <input type="password" class="border-0 w-100 password_confirmation" name="password_confirmation">
           </div>
+          @error('password_confirmation')
+                <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
+          @enderror
         </div>
+        
         <div class="mt-5 text-right">
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>

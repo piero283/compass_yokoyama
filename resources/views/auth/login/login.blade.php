@@ -9,9 +9,7 @@
           </div>
         </div>
         <div class="w-75 m-auto pt-5">
-          <label class="d-block m-0" style="font-size:13px;">パスワード
-            
-          </label>
+          <label class="d-block m-0" style="font-size:13px;">パスワード</label>
           <div class="border-bottom border-primary w-100">
             <input type="password" class="w-100 border-0" name="password">
           </div>
