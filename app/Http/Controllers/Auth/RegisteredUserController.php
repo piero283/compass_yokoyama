@@ -44,11 +44,11 @@ class RegisteredUserController extends Controller
             'over_name_kana' =>'required|string|regex:/^[ァ-ヶー]+$/u|max:30',
             'under_name_kana' =>'required|string|regex:/^[ァ-ヶー]+$/u|max:30',
             'mail_address' =>'required|email|unique:users,mail_address',
-            'sex' =>'required|in:male,female,other',
+            'sex' =>'required|in:1,2,3',
             'old_year' => 'required|integer|between:2000,' . date('Y'),
             'old_month' => 'required|integer|between:1,12',
             'old_day' => 'required|integer|between:1,31',
-            'role' =>'required|in:講師(国語),講師(数学),教師(英語),生徒',
+            'role' =>'required|in:1,2,3,4',
             'password' =>'required|between:8,30|confirmed',],
         );
 
