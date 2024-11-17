@@ -6,9 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use App\Models\Posts\Like;
 use Auth;
+use App\Models\Users\Subject;
+
 
 class User extends Authenticatable
 {
@@ -66,8 +67,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Calendars\ReserveSettings', 'reserve_setting_users', 'user_id', 'reserve_setting_id')->withPivot('id');
     }
 
+    // userテーブルとsubjectテーブルのリレーションの定義
     public function subjects(){
-        return $this->belongsToMany(Subject::class, 'subject_users', 'user_id', 'subject_id');// userテーブルとsubjectテーブルのリレーションの定義
+        return $this->belongsToMany(Subject::class, 'subject_users', 'user_id', 'subject_id');
     }
 
     // いいねしているかどうか

@@ -170,7 +170,7 @@
           @foreach($subjects as $subject)
           <div class="">
             <input type="checkbox" name="subject[]" value="{{ $subject->id }}">
-            <label>{{ $subject->subject }}</label>
+            <label>{{ $subjects->subject }}</label>
           </div>
           @endforeach
         </div>
@@ -194,7 +194,7 @@
                 <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
           @enderror
         </div>
-        
+
         <div class="mt-5 text-right">
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>

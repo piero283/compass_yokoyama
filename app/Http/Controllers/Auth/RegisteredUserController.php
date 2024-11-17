@@ -9,9 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Http\Requests\CustomDateRequest;
 use DB;
 
-use App\Models\Users\Subjects;
+use App\Models\Users\Subject;
 use App\Models\Users\User;
 
 class RegisteredUserController extends Controller
@@ -23,8 +24,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $subjects = Subjects::all();
-        return view('auth.register.register', compact('subjects'));
+        $subjects = Subject::all();
+        return view('auth.register.register', ['subjects' => $subjects]);
     }
 
     /**
@@ -35,30 +36,11 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(CustomDateRequest $request)
     {
-        //新規登録のバリデーション
-        $request->validate([
-            'over_name' =>'required|string|max:10',
-            'under_name' =>'required|string|max:10',
-            'over_name_kana' =>'required|string|regex:/^[ァ-ヶー]+$/u|max:30',
-            'under_name_kana' =>'required|string|regex:/^[ァ-ヶー]+$/u|max:30',
-            'mail_address' =>'required|email|unique:users,mail_address',
-            'sex' =>'required|in:1,2,3',
-            'old_year' => 'required|integer|between:2000,' . date('Y'),
-            'old_month' => 'required|integer|between:1,12',
-            'old_day' => 'required|integer|between:1,31',
-            'role' =>'required|in:1,2,3,4',
-            'password' =>'required|between:8,30|confirmed',],
-        );
-
         DB::beginTransaction();
-        try{
-            $old_year = $request->old_year;
-            $old_month = $request->old_month;
-            $old_day = $request->old_day;
-            $data = $old_year . '-' . $old_month . '-' . $old_day;
-            $birth_day = date('Y-m-d', strtotime($data));
+        try {
+            $birth_day = sprintf('%04d-%02d-%02d', $request->old_year, $request->old_month, $request->old_day);
             $subjects = $request->subject;
 
             $user_get = User::create([
@@ -68,19 +50,22 @@ class RegisteredUserController extends Controller
                 'under_name_kana' => $request->under_name_kana,
                 'mail_address' => $request->mail_address,
                 'sex' => $request->sex,
-                'birth_day' => $birth_day,
+                'birth_day' => $request->birth_day,
                 'role' => $request->role,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
             ]);
-            if($request->role == 4){
-                $user = User::findOrFail($user_get->id);
-                $user->subjects()->attach($subjects);
+
+            if ($request->role == 4) {
+                $user_get->subjects()->attach($subjects);
             }
+
             DB::commit();
             return view('auth.login.login');
-        }catch(\Exception $e){
-            DB::rollback();
-            return redirect()->route('loginView');
-        }
+            } catch (\Exception $e)
+                {
+                    DB::rollback();
+                    \Log::error('Registration failed: ' . $e->getMessage());
+                    return redirect()->route('loginView')->with('error', '登録中に問題が発生しました。');
+                }
     }
 }
