@@ -18,7 +18,7 @@
           <input type="submit" class="btn btn-primary" value="ログイン">
         </div>
         <div class="text-center">
-          <a href="{{ route('registerView') }}">新規登録</a>
+          <a href="{{ route('register') }}">新規登録</a>
         </div>
       </div>
       {{ csrf_field() }}

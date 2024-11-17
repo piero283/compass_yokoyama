@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
                 {
                     DB::rollback();
                     \Log::error('Registration failed: ' . $e->getMessage());
-                    return redirect()->route('loginView')->with('error', '登録中に問題が発生しました。');
+                    return redirect()->route('login')->with('error', '登録中に問題が発生しました。');
                 }
     }
 }

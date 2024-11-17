@@ -23,6 +23,8 @@ use App\Http\Controllers\Authenticated\Users\UsersController;
 require __DIR__.'/auth.php';
 
 Route::group(['middleware' => 'auth'], function(){
+    //loginに遷移するための追記
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::namespace('Authenticated')->group(function(){
         Route::namespace('Top')->group(function(){
             Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
