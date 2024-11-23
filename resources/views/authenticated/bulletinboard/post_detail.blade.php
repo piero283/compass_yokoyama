@@ -3,15 +3,26 @@
   <div class="w-50 mt-5">
     <div class="m-3 detail_container">
       <div class="p-3">
-        <div class="detail_inner_head">
-          <div>
+        @if (Auth::id() === $post->user_id)
+          <div class="detail_inner_head">
+            <div>
+            </div>
+            <div>
+              <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
+              <a href="#" class="delete-modal-open" data-post_id="{{ $post->id }}">削除</a>
+            </div>
           </div>
-          <div>
-            <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
-          </div>
-        </div>
+        @endif
 
+
+        <!-- タイトルのエラーメッセージ -->
+        @error('post_title')
+          <span class="text-danger">{{ $message }}</span>
+        @enderror
+        <!-- 投稿内容のエラーメッセージ -->
+        @error('post_body')
+          <span class="text-danger">{{ $message }}</span>
+        @enderror
         <div class="contributor d-flex">
           <p>
             <span>{{ $post->user->over_name }}</span>
@@ -39,19 +50,19 @@
       </div>
     </div>
   </div>
-  <div class="w-50 p-3">
-    <div class="comment_container border m-5">
-      <div class="comment_area p-3">
-        <p class="m-0">コメントする</p>
-        <textarea class="w-100" name="comment" form="commentRequest"></textarea>
-        <input type="hidden" name="post_id" form="commentRequest" value="{{ $post->id }}">
-        <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">
-        <form action="{{ route('comment.create') }}" method="post" id="commentRequest">{{ csrf_field() }}</form>
+    <div class="w-50 p-3">
+      <div class="comment_container border m-5">
+        <div class="comment_area p-3">
+          <p class="m-0">コメントする</p>
+          <textarea class="w-100" name="comment" form="commentRequest"></textarea>
+          <input type="hidden" name="post_id" form="commentRequest" value="{{ $post->id }}">
+          <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">
+          <form action="{{ route('comment.create') }}" method="post" id="commentRequest">{{ csrf_field() }}</form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal js-modal">
+  <div class="modal js-modal">
   <div class="modal__bg js-modal-close"></div>
   <div class="modal__content">
     <form action="{{ route('post.edit') }}" method="post">
@@ -71,5 +82,17 @@
       {{ csrf_field() }}
     </form>
   </div>
-</div>
+  </div>
+  <!--削除確認用モーダル-->
+  <div class="modal js-delete-modal">
+    <div class="modal__bg js-delete-modal-close"></div>
+    <div class="modal__content">
+      <p>削除してもよろしいですか？</p>
+      <input type="hidden" class="delete-modal-hidden">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-secondary js-delete-modal-close">キャンセル</button>
+        <button class="btn btn-danger js-delete-confirm">OK</button>
+      </div>
+    </div>
+  </div>
 </x-sidebar>

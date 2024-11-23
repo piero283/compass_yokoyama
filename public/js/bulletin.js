@@ -64,3 +64,34 @@ $(function () {
   });
 
 });
+
+$(function () {
+  // 削除ボタンをクリックするとモーダルが表示される
+  $(document).on('click', '.delete-modal-open', function (e) {
+    e.preventDefault();
+    const post_id = $(this).data('post_id'); // data属性を使用してpost_idを取得
+    $('.delete-modal-hidden').val(post_id);
+    $('.js-delete-modal').fadeIn(); // 削除モーダルを表示
+  });
+
+  // キャンセルボタンをクリックするとモーダルが閉じる
+  $(document).on('click', '.js-delete-modal-close', function () {
+    $('.js-delete-modal').fadeOut(); // モーダルを非表示
+  });
+
+  // OKボタンをクリックするとポストを削除
+  $(document).on('click', '.js-delete-confirm', function () {
+    const post_id = $('.delete-modal-hidden').val();
+
+    $.post('/bulletin_board/delete/' + post_id, {
+      _token: $('meta[name="csrf-token"]').attr('content')
+    })
+      .done(function () {
+        $('#post-' + post_id).remove();
+        $('.js-delete-modal').fadeOut();
+      })
+      .fail(function () {
+        alert('削除に失敗しました');
+      });
+  });
+});
