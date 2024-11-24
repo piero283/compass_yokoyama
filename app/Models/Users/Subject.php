@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Users\User;
 
-class Subjects extends Model
+class Subject extends Model
 {
     const UPDATED_AT = null;
 
@@ -15,7 +15,8 @@ class Subjects extends Model
         'subject'
     ];
 
+    // userテーブルとsubjectテーブルのリレーションの定義
     public function users(){
-        return $this->belongsToMany(User::class, 'subject_users', 'subject_id', 'user_id');// userテーブルとsubjectテーブルのリレーションの定義
+        return $this->belongsToMany(User::class, 'subject_users', 'subject_id', 'user_id');
     }
 }

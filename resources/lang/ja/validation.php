@@ -146,6 +146,30 @@ return [
     |
     */
 
-    'attributes' => [],
+        //バリデーションを日本語表示させる
+    'email' => ':attribute は有効なメールアドレス形式で入力してください。',
+    'min' => [
+        'string' => ':attribute は最低 :min 文字で入力してください。',
+    ],
+    'max' => [
+        'string' => ':attribute は :max 文字以内で入力してください。',
+    ],
+    'between' => [
+        'string' => ':attribute は :min 文字以上 :max 文字以下で入力してください。',
+    ],
+
+    'regex' => ':attribute の形式が正しくありません。',
+    'required' => ':attribute は必須項目です。',
+    'confirmed' => ':attribute が確認欄と一致していません。',
+
+    'attributes' => [
+        'over_name' => '姓',
+        'under_name' => '名',
+        'over_name_kana' => 'セイ',
+        'under_name_kana' => 'メイ',
+        'mail_address' => 'メールアドレス',
+        'password' => 'パスワード',
+    ],
+
 
 ];

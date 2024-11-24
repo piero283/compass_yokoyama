@@ -69,6 +69,7 @@ class PostsController extends Controller
         return redirect()->route('post.detail', ['id' => $request->post_id])->with('success','投稿が更新されました');
     }
 
+    //投稿削除機能
     public function postDelete($id){
         Post::findOrFail($id)->delete();
         return redirect()->route('post.show');
