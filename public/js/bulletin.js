@@ -89,6 +89,8 @@ $(function () {
       .done(function () {
         $('#post-' + post_id).remove();
         $('.js-delete-modal').fadeOut();
+        // 現在のページを別のURLに遷移する
+        window.location.href = "/bulletin_board/posts";
       })
       .fail(function () {
         alert('削除に失敗しました');
