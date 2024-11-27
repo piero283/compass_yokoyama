@@ -3,6 +3,8 @@
 namespace App\Models\Posts;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Posts\Like;
+
 
 class Post extends Model
 {
@@ -17,6 +19,14 @@ class Post extends Model
 
     public function user(){
         return $this->belongsTo('App\Models\Users\User');
+    }
+
+    public function likes(){
+        return $this->hasMany('App\Models\Posts\Like', 'like_post_id', 'id');
+    }
+
+    public function likeCount(){
+        return $this->likes()->count();
     }
 
     public function postComments(){

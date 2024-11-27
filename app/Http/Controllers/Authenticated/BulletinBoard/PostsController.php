@@ -16,26 +16,52 @@ use Auth;
 class PostsController extends Controller
 {
     public function show(Request $request){
-        $posts = Post::with('user', 'postComments')->get();
+        //投稿といいね数を取得
+        $posts = Post::with('user', 'postComments')
+        ->withCount('likes')//各投稿のいいねを取得
+        ->get();
+
         $categories = MainCategory::get();
+
+        foreach ($posts as $post) {
+        // それぞれの投稿に対していいね数を取得
+        $post->like_count = $post->likeCount();
+        }
+
+        $userLikes = Auth::user()->likes;
+        if ($userLikes) {
+            $userLikes = $userLikes->pluck('like_post_id')->toArray();
+        } else {
+            $userLikes = []; // likesがない場合は空の配列
+        }
+
         $like = new Like;
         $post_comment = new Post;
+
         if(!empty($request->keyword)){
             $posts = Post::with('user', 'postComments')
+            ->withCount('likes')
             ->where('post_title', 'like', '%'.$request->keyword.'%')
-            ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
+            ->orWhere('post', 'like', '%'.$request->keyword.'%')
+            ->get();
         }else if($request->category_word){
             $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')->get();
+            $posts = Post::with('user', 'postComments')
+            ->withCount('likes')
+            ->get();
         }else if($request->like_posts){
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
-            ->whereIn('id', $likes)->get();
+            ->withCount('likes')
+            ->whereIn('id', $likes)
+            ->get();
         }else if($request->my_posts){
             $posts = Post::with('user', 'postComments')
-            ->where('user_id', Auth::id())->get();
+            ->withCount('likes')
+            ->where('user_id', Auth::id())
+            ->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
+        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment', 'userLikes'));
     }
 
     public function postDetail($post_id){
@@ -112,7 +138,13 @@ class PostsController extends Controller
         $like->like_post_id = $post_id;
         $like->save();
 
-        return response()->json();
+        // いいねしたユーザー数をカウント
+        $likeCount = Like::where('like_post_id', $post_id)->count();
+
+        return response()->json([
+        'success' => true,
+        'like_count' => $likeCount, // いいね数をレスポンスに含める
+        ]);
     }
 
     public function postUnLike(Request $request){
