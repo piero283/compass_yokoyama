@@ -4,7 +4,7 @@ namespace App\Models\Posts;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Posts\Like;
-
+use App\Models\Posts\PostComments;
 
 class Post extends Model
 {
