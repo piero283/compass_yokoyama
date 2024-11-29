@@ -18,7 +18,7 @@ class PostsController extends Controller
     public function show(Request $request){
         //投稿といいね数を取得
         $posts = Post::with('user', 'postComments')
-        ->withCount('likes')//各投稿のいいねを取得
+        ->withCount('likes','postComments')//各投稿のいいねを取得
         ->get();
 
         $categories = MainCategory::get();
@@ -35,33 +35,33 @@ class PostsController extends Controller
 
         if(!empty($request->keyword)){
             $posts = Post::with('user', 'postComments')
-            ->withCount('likes')
+            ->withCount('likes', 'postComments')
             ->where('post_title', 'like', '%'.$request->keyword.'%')
             ->orWhere('post', 'like', '%'.$request->keyword.'%')
             ->get();
         }else if($request->category_word){
             $sub_category = $request->category_word;
             $posts = Post::with('user', 'postComments')
-            ->withCount('likes')
+            ->withCount('likes', 'postComments')
             ->get();
         }else if($request->like_posts){
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
-            ->withCount('likes')
+            ->withCount('likes', 'postComments')
             ->whereIn('id', $likes)
             ->get();
         }else if($request->my_posts){
             $posts = Post::with('user', 'postComments')
-            ->withCount('likes')
+            ->withCount('likes', 'postComments')
             ->where('user_id', Auth::id())
             ->get();
         }
 
-                foreach ($posts as $post) {
+        foreach ($posts as $post) {
         // それぞれの投稿に対していいね数を取得
         $post->like_count = $post->likeCount();
         }
-        
+
         return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment', 'userLikes'));
     }
 
