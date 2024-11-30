@@ -12,6 +12,8 @@ use App\Models\Posts\Like;
 use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use App\Http\Requests\CommentFormRequest;
+use App\Http\Requests\CategoriesFormRequest;
+
 
 use Auth;
 
@@ -104,12 +106,15 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
 
-    public function mainCategoryCreate(Request $request){
-        MainCategory::create(['main_category' => $request->main_category_name]);
+    //メインカテゴリー
+    public function mainCategoryCreate(CategoriesFormRequest $request){
+        MainCategory::create([
+            'main_category' => $request->main_category_name,
+        ]);
         return redirect()->route('post.input');
     }
 
-    //コメントのバリデーション
+    //コメント
     public function commentCreate(CommentFormRequest $request){
         PostComment::create([
             'post_id' => $request->post_id,
@@ -142,12 +147,10 @@ class PostsController extends Controller
         $like->like_post_id = $post_id;
         $like->save();
 
-        // いいねしたユーザー数をカウント
         $likeCount = Like::where('like_post_id', $post_id)->count();
-
         return response()->json([
         'success' => true,
-        'like_count' => $likeCount, // いいね数をレスポンスに含める
+        'like_count' => $likeCount,
         ]);
     }
 
