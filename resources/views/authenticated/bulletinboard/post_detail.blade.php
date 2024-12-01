@@ -24,6 +24,13 @@
           <span class="text-danger">{{ $message }}</span>
         @enderror
         <div class="contributor d-flex">
+          @if ($post->subCategories->isNotEmpty())
+            @foreach ($post->subCategories as $subCategory)
+              <p>{{ $subCategory->sub_category }}</p>
+            @endforeach
+          @else
+            <p>サブカテゴリーはありません。</p>
+          @endif
           <p>
             <span>{{ $post->user->over_name }}</span>
             <span>{{ $post->user->under_name }}</span>

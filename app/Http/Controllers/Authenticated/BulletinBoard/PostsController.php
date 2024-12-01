@@ -13,6 +13,7 @@ use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use App\Http\Requests\CommentFormRequest;
 use App\Http\Requests\CategoriesFormRequest;
+use App\Http\Requests\SubCategoriesFormRequest;
 
 
 use Auth;
@@ -82,11 +83,16 @@ class PostsController extends Controller
     //投稿機能
     public function postCreate(PostFormRequest $request)
     {
+        //投稿データ作成
         $post = Post::create([
             'user_id' => Auth::id(),
             'post_title' => $request->post_title,
             'post' => $request->post_body
         ]);
+
+        // サブカテゴリーIDを関連付け
+        $post->subCategories()->sync($request->sub_category_ids);
+
         return redirect()->route('post.show');
     }
 
@@ -110,6 +116,15 @@ class PostsController extends Controller
     public function mainCategoryCreate(CategoriesFormRequest $request){
         MainCategory::create([
             'main_category' => $request->main_category_name,
+        ]);
+        return redirect()->route('post.input');
+    }
+
+    //サブカテゴリー
+    public function subCategoryCreate(SubCategoriesFormRequest $request){
+        SubCategory::create([
+            'main_category_id' => $request->main_category_id,
+            'sub_category' => $request->sub_category_name,
         ]);
         return redirect()->route('post.input');
     }

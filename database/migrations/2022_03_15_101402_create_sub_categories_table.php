@@ -16,7 +16,7 @@ class CreateSubCategoriesTable extends Migration
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('main_category_id')->unsigned()->index()->comment('メインカテゴリーID');
-            $table->string('sub_category', 60)->index()->comment('サブカテゴリー名');
+            $table->string('sub_category', 60)->unique()->index()->comment('サブカテゴリー名');
             $table->timestamps(); // created_at と updated_at を自動で追加
 
             // 外部キー制約の追加

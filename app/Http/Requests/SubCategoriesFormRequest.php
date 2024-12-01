@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoriesFormRequest extends FormRequest
+class SubCategoriesFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,16 @@ class CategoriesFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'main_category_name' => 'required|string|max:100|unique:main_categories,main_category',
+            'main_category_id' => 'required|exists:main_categories,id',
+            'sub_category_name' => 'required|string|max:100|unique:sub_categories,sub_category',
         ];
     }
 
     public function messages()
     {
         return [
-            'main_category_name.required' => 'メインカテゴリーは必ず入力してください。',
-            'main_category_name.unique' => '同じ名前のメインカテゴリーは既に登録されています。',
+            'sub_category_name.required' => 'サブカテゴリーは必ず入力してください。',
         ];
     }
+
 }
