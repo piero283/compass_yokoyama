@@ -3,7 +3,7 @@
   <div class="post_create_area border w-50 m-5 p-5">
     <div class="">
       <p class="mb-0">カテゴリー</p>
-      <select class="w-100" form="postCreate" name="post_category_id">
+      <select class="w-100" form="postCreate" name="sub_category_ids[]">
         @foreach($main_categories as $main_category)
         <optgroup label="{{ $main_category->main_category }}">
         <!-- サブカテゴリー表示 -->
@@ -33,6 +33,8 @@
     </div>
     <form action="{{ route('post.create') }}" method="post" id="postCreate">{{ csrf_field() }}</form>
   </div>
+
+
   @can('admin')
   <div class="w-25 ml-auto mr-auto">
     <div class="category_area mt-5 p-5">

@@ -21,8 +21,13 @@ class SubCategory extends Model
         return $this->belongsTo('App\Models\Categories\MainCategory');
     }
 
-    public function posts(){
-        // リレーションの定義
-        return $this->belongsToMany('App\Models\Posts\Post', 'post_sub_categories', 'sub_category_id', 'post_id');
+    public function posts()
+    {
+        return $this->belongsToMany(
+            'App\Models\Posts\Post', //対応するモデル
+            'post_sub_categories', //中間テーブル
+            'sub_category_id', //このモデルの外部キー
+            'post_id' //Postモデルの外部キー
+        );
     }
 }

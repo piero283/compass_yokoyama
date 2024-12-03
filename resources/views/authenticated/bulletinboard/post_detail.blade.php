@@ -23,14 +23,16 @@
         @error('post_body')
           <span class="text-danger">{{ $message }}</span>
         @enderror
-        <div class="contributor d-flex">
+        <div class="">
           @if ($post->subCategories->isNotEmpty())
             @foreach ($post->subCategories as $subCategory)
               <p>{{ $subCategory->sub_category }}</p>
             @endforeach
           @else
-            <p>サブカテゴリーはありません。</p>
+            <p>サブカテゴリーはありません</p>
           @endif
+        </div>
+        <div class="contributor d-flex">
           <p>
             <span>{{ $post->user->over_name }}</span>
             <span>{{ $post->user->under_name }}</span>

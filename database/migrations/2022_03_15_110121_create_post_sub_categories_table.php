@@ -15,9 +15,9 @@ class CreatePostSubCategoriesTable extends Migration
     {
         Schema::create('post_sub_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('post_id')->index()->comment('投稿のid');
-            $table->integer('sub_category_id')->unsigned()->index()->comment('サブカテゴリーid');
-            $table->timestamp('created_at')->nullable()->comment('登録日時');
+            $table->unsignedInteger('post_id')->index()->comment('投稿のid');
+            $table->unsignedInteger('sub_category_id')->index()->comment('サブカテゴリーid');
+            $table->timestamps('created_at')->nullable()->comment('登録日時');
 
             // 外部キー制約の追加
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

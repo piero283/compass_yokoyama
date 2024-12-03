@@ -22,7 +22,7 @@ class PostsController extends Controller
 {
     public function show(Request $request){
         //投稿といいね数を取得
-        $posts = Post::with('user', 'postComments')
+        $posts = Post::with('user', 'postComments', 'subCategories')
         ->withCount('likes','postComments')//各投稿のいいねを取得
         ->get();
 
@@ -39,31 +39,34 @@ class PostsController extends Controller
         $post_comment = new Post;
 
         if(!empty($request->keyword)){
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments', 'subCategories')
             ->withCount('likes', 'postComments')
             ->where('post_title', 'like', '%'.$request->keyword.'%')
             ->orWhere('post', 'like', '%'.$request->keyword.'%')
             ->get();
-        }else if($request->category_word){
+        }else if($request->category_word){ //カテゴリーフィルター
             $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments', 'subCategories')
             ->withCount('likes', 'postComments')
+            ->whereHas('subCategories', function ($query) use ($sub_category) {
+                $query->where('sub_category', $sub_category); // フィルターの条件
+            })
             ->get();
-        }else if($request->like_posts){
+        }else if($request->like_posts){ //いいねした投稿
             $likes = Auth::user()->likePostId()->get('like_post_id');
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments', 'subCategories')
             ->withCount('likes', 'postComments')
             ->whereIn('id', $likes)
             ->get();
-        }else if($request->my_posts){
+        }else if($request->my_posts){ //自身の投稿
             $posts = Post::with('user', 'postComments')
             ->withCount('likes', 'postComments')
             ->where('user_id', Auth::id())
             ->get();
         }
 
+        //いいね数の取得
         foreach ($posts as $post) {
-        // それぞれの投稿に対していいね数を取得
         $post->like_count = $post->likeCount();
         }
 
