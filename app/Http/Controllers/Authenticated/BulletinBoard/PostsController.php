@@ -20,58 +20,66 @@ use Auth;
 
 class PostsController extends Controller
 {
-    public function show(Request $request){
-        //投稿といいね数を取得
-        $posts = Post::with('user', 'postComments', 'subCategories')
-        ->withCount('likes','postComments')//各投稿のいいねを取得
-        ->get();
+    public function show(Request $request)
+    {
+        // 投稿と関連データを取得
+        $query = Post::with('user', 'postComments', 'subCategories')
+            ->withCount('likes', 'postComments'); // 各投稿のいいね数・コメント数を取得
 
+        // メインカテゴリーを取得
         $categories = MainCategory::get();
-
+        // ログインユーザーのいいね情報を取得
         $userLikes = Auth::user()->likes;
-        if ($userLikes) {
-            $userLikes = $userLikes->pluck('like_post_id')->toArray();
-        } else {
-            $userLikes = []; // likesがない場合は空の配列
-        }
+        $userLikes = $userLikes ? $userLikes->pluck('like_post_id')->toArray() : []; // likesがない場合は空配列
 
         $like = new Like;
         $post_comment = new Post;
 
-        if(!empty($request->keyword)){
-            $posts = Post::with('user', 'postComments', 'subCategories')
-            ->withCount('likes', 'postComments')
-            ->where('post_title', 'like', '%'.$request->keyword.'%')
-            ->orWhere('post', 'like', '%'.$request->keyword.'%')
-            ->get();
-        }else if($request->category_word){ //カテゴリーフィルター
-            $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments', 'subCategories')
-            ->withCount('likes', 'postComments')
-            ->whereHas('subCategories', function ($query) use ($sub_category) {
-                $query->where('sub_category', $sub_category); // フィルターの条件
-            })
-            ->get();
-        }else if($request->like_posts){ //いいねした投稿
-            $likes = Auth::user()->likePostId()->get('like_post_id');
-            $posts = Post::with('user', 'postComments', 'subCategories')
-            ->withCount('likes', 'postComments')
-            ->whereIn('id', $likes)
-            ->get();
-        }else if($request->my_posts){ //自身の投稿
-            $posts = Post::with('user', 'postComments')
-            ->withCount('likes', 'postComments')
-            ->where('user_id', Auth::id())
-            ->get();
+        // キーワード検索の実装①
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+            // サブカテゴリー名との完全一致を確認
+            $subCategory = SubCategory::where('sub_category', $keyword)->first();
+            if ($subCategory) {
+                // サブカテゴリーに属する投稿を取得
+                //sub_categories.id←どのテーブルのidか明示
+                $query->whereHas('subCategories', function ($q) use ($subCategory) {
+                    $q->where('sub_categories.id', $subCategory->id);
+                });
+            } else {
+                // サブカテゴリー名に一致しない場合、タイトル・投稿内容のあいまい検索
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('post_title', 'LIKE', "%{$keyword}%")
+                    ->orWhere('post', 'LIKE', "%{$keyword}%");
+                });
+            }
+        }
+        // カテゴリーフィルター
+        if ($request->filled('category_word')) {
+            $subCategoryWord = $request->category_word;
+            $query->whereHas('subCategories', function ($q) use ($subCategoryWord) {
+                $q->where('sub_categories.id', $subCategoryWord);
+            });
         }
 
-        //いいね数の取得
+        // いいねした投稿のフィルター②
+        if ($request->filled('like_posts')) {
+            $likes = Auth::user()->likePostId()->pluck('like_post_id');
+            $query->whereIn('id', $likes);
+        }
+        // 自分の投稿フィルター③
+        if ($request->filled('my_posts')) {
+            $query->where('user_id', Auth::id());
+        }
+        // クエリ結果を取得
+        $posts = $query->get();
+        // いいね数の取得
         foreach ($posts as $post) {
-        $post->like_count = $post->likeCount();
+            $post->like_count = $post->likeCount();
         }
-
         return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment', 'userLikes'));
     }
+
 
     public function postDetail($post_id){
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
