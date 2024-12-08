@@ -63,7 +63,7 @@
         <lavel>カテゴリ</lavel>
         <select form="userSearchRequest" name="category">
           <option value="name">名前</option>
-          <option value="id">社員ID</option>
+          <option value="id">ID</option>
         </select>
       </div>
       <div>
@@ -94,6 +94,13 @@
           </div>
           <div class="selected_engineer">
             <label>選択科目</label>
+            @foreach($subjects as $subject)
+              <div>
+                <input type="checkbox" name="subjects[]" value="{{ $subject->id }}" form="userSearchRequest"
+                  @if(in_array($subject->id, (array)request('subjects'))) checked @endif>
+                <label>{{ $subject->subject }}</label>
+              </div>
+            @endforeach
           </div>
         </div>
       </div>
