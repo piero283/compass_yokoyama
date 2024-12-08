@@ -35,7 +35,8 @@
   </div>
 
 
-  @can('admin')
+  <!--教師のみ表示-->
+  @if (in_array(Auth::user()->role, [1, 2, 3]))
   <div class="w-25 ml-auto mr-auto">
     <div class="category_area mt-5 p-5">
       <div class="main_category">
@@ -68,7 +69,7 @@
         </form>
       </div>
     </div>
-    @endcan
+  @endif
   </div>
 </div>
 </x-sidebar>
