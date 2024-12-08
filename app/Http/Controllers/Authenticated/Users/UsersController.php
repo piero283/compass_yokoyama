@@ -29,7 +29,7 @@ class UsersController extends Controller
 
     public function userProfile($id){
         $user = User::with('subjects')->findOrFail($id);
-        $subject_lists = Subjects::all();
+        $subject_lists = Subject::all();
         return view('authenticated.users.profile', compact('user', 'subject_lists'));
     }
 
