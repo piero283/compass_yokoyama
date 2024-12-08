@@ -32,8 +32,16 @@ class SubCategoriesFormRequest extends FormRequest
     public function messages()
     {
         return [
+            // メインカテゴリー関連
+            'main_category_id.required' => 'メインカテゴリーを選択してください。',
+            'main_category_id.exists' => '選択したメインカテゴリーは存在しません。',
+            // サブカテゴリー関連
             'sub_category_name.required' => 'サブカテゴリーは必ず入力してください。',
+            'sub_category_name.string' => 'サブカテゴリーは文字列で入力してください。',
+            'sub_category_name.max' => 'サブカテゴリーは100文字以内で入力してください。',
+            'sub_category_name.unique' => 'このサブカテゴリー名はすでに登録されています。',
         ];
     }
+
 
 }
