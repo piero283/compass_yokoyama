@@ -1,12 +1,11 @@
 <?php
 namespace App\Calendars\General;
-
 use Carbon\Carbon;
 use Auth;
 
 class CalendarView{
-
   private $carbon;
+
   function __construct($date){
     $this->carbon = new Carbon($date);
   }
@@ -31,7 +30,9 @@ class CalendarView{
     $html[] = '</tr>';
     $html[] = '</thead>';
     $html[] = '<tbody>';
+
     $weeks = $this->getWeeks();
+
     foreach($weeks as $week){
       $html[] = '<tr class="'.$week->getClassName().'">';
 
@@ -41,13 +42,14 @@ class CalendarView{
         $toDay = $this->carbon->copy()->format("Y-m-d");
 
         if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="calendar-td">';
+          $html[] = '<td class="calendar-td past-day">';//past-day追記
         }else{
           $html[] = '<td class="calendar-td '.$day->getClassName().'">';
         }
         $html[] = $day->render();
 
         if(in_array($day->everyDay(), $day->authReserveDay())){
+          //過去日に予約がある場合
           $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
           if($reservePart == 1){
             $reservePart = "リモ1部";
@@ -56,15 +58,24 @@ class CalendarView{
           }else if($reservePart == 3){
             $reservePart = "リモ3部";
           }
+
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
+            // 過去日に予約がある場合は参加した部を表示(' . $reservePart . '参加)←追記
+            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">' . $reservePart . '参加</p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{
+            // 現在または未来日の予約
             $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }
-        }else{
-          $html[] = $day->selectPart($day->everyDay());
+        }else {
+            // 過去日に予約がない場合
+            if ($startDay <= $day->everyDay() && $toDay >= $day->everyDay()) {
+                $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">受付終了</p>';
+            } else {
+                // 未来日の予約選択
+                $html[] = $day->selectPart($day->everyDay());
+            }
         }
         $html[] = $day->getDate();
         $html[] = '</td>';
