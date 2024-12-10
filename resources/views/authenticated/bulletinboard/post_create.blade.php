@@ -52,12 +52,17 @@
       </div>
 
       <div class="sub_category">
+        <!--サブカテゴリーエラー-->
         @if ($errors->has('sub_category_name'))
           <span class="text-danger">{{ $errors->first('sub_category_name') }}</span>
         @endif
         <p class="m-0">サブカテゴリー</p>
         <form action="{{ route('sub.category.create') }}" method="post">
           @csrf
+          <!-- メインカテゴリーエラー -->
+          @if ($errors->has('main_category_id'))
+              <span class="text-danger">{{ $errors->first('main_category_id') }}</span>
+          @endif
           <select name="main_category_id" class="w-100">
             <option value="">---</option>
             @foreach ($main_categories as $main_category)
