@@ -22,15 +22,9 @@ class UsersController extends Controller
         $role = $request->role;
         $subjects = $request->subjects;// ここで検索時の科目を受け取る。
         $userFactory = new SearchResultFactories();
-        $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects);
+        $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects)
+        ->load('subjects');
 
-        // 選択科目がチェックされている場合、教師は除外
-        if (!empty($subjects)) {
-            $users = $users->filter(function($user) use ($subjects) {
-                // ユーザーが教師でない、かつ選択科目を持っている場合にフィルタリング
-                return !in_array($user->role, [1, 2, 3]) && $user->subjects->pluck('id')->intersect($subjects)->isNotEmpty();
-            });
-        }
 
         $subjects = Subject::all();
         return view('authenticated.users.search', compact('users', 'subjects'));
