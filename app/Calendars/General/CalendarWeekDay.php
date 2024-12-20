@@ -29,6 +29,8 @@ class CalendarWeekDay{
     return '<p class="day">' . $this->carbon->format("j"). '日</p>';
   }
 
+
+
   function selectPart($ymd){
     $one_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '1')->first();
     $two_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
@@ -73,18 +75,18 @@ class CalendarWeekDay{
 
   function getDate(){
     return '<input type="hidden" value="'. $this->carbon->format('Y-m-d') .'" name="getData[]" form="reserveParts">';
-   }
+  }
 
-   function everyDay(){
-     return $this->carbon->format('Y-m-d');
-   }
+  function everyDay(){
+    return $this->carbon->format('Y-m-d');
+  }
 
-   function authReserveDay(){
-     return Auth::user()->reserveSettings->pluck('setting_reserve')->toArray();
-   }
+  function authReserveDay(){
+    return Auth::user()->reserveSettings->pluck('setting_reserve')->toArray();
+  }
 
-   function authReserveDate($reserveDate){
-     return Auth::user()->reserveSettings->where('setting_reserve', $reserveDate);
-   }
+  function authReserveDate($reserveDate){
+    return Auth::user()->reserveSettings->where('setting_reserve', $reserveDate);
+  }
 
 }

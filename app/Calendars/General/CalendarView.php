@@ -32,21 +32,28 @@ class CalendarView{
     $html[] = '<tbody>';
 
     $weeks = $this->getWeeks();
+    //dd($weeks);
 
     foreach($weeks as $week){
       $html[] = '<tr class="'.$week->getClassName().'">';
       $days = $week->getDays();
+      //dd($days);
 
       foreach($days as $day){
-        $startDay = $this->carbon->copy()->format("Y-m-01");
-        $toDay = $this->carbon->copy()->format("Y-m-d");
-        $isPastDay = ($startDay <= $day->everyDay() && $toDay >= $day->everyDay());
+        $startDay = $this->carbon->copy()->format("Y-m-01"); //12/01返ってくる
+        $toDay = $this->carbon->copy()->format("Y-m-d"); //本日の日付で返ってくる
+        $isPastDay = (
+          $startDay <= $day->everyDay() &&
+          $toDay >= $day->everyDay()) &&
+          $this->carbon->month == (new Carbon($day->everyDay()))->month; //nullが返ってくる
+          //dump($startDay, $toDay, $day->everyDay());
+
 
         $html[] = '<td class="calendar-td ' . ($isPastDay ? 'past-day' : $day->getClassName()) . '">';
         $html[] = $day->render();
 
         if(in_array($day->everyDay(), $day->authReserveDay())){
-          //過去日に予約がある場合　※後で下記内容確認
+          //過去日に予約がある場合　
           $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
           // hiddenフィールドを追加
           $html[] = '<input type="hidden" name="getDate[]" value="' . $day->everyDay() . '">';
@@ -66,7 +73,7 @@ class CalendarView{
           }else{
             // 現在または未来日の予約
             $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate
-            ($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
+            ($day->everyDay())->first()->setting_reserve .'">' . $reservePart . '</button>';
           }
         }else {
             if($isPastDay) {

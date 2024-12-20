@@ -18,22 +18,25 @@ class CalendarController extends Controller
         return view('authenticated.calendar.general.calendar', compact('calendar'));
     }
 
+
+
     public function reserve(Request $request){
         $getDate = $request->input('getData', []); // デフォルトは空配列
         $getPart = $request->input('getPart', []); // デフォルトは空配列
-        //dd($request->getPart);
-        dd($request->input('getDate'), $request->input('getPart'));
 
+        // 今日以降の日付のみを抽出　＊解説必須
+        $getDate = array_filter($getDate, function($date) {
+            return strtotime($date) >= strtotime(date('Y-m-d')); // 今日以降の日付
+        });
+
+        //ここが原因ポイ
+        dd($getDate, $getPart);
+
+        // 配列を結合
+        //$reserveDays = array_filter(array_combine($getDate, $getPart));
 
         DB::beginTransaction();
-        try{
-            if (count($getDate) > count($getPart)) {
-                $getDate = array_slice($getDate, 0, count($getPart));
-            } elseif (count($getPart) > count($getDate)) {
-                $getPart = array_slice($getPart, 0, count($getDate));
-            }
-            $reserveDays = array_filter(array_combine($getDate, $getPart));
-
+        try {
             foreach ($reserveDays as $key => $value) {
                 $reserve_settings = ReserveSettings::where('setting_reserve', $key)
                     ->where('setting_part', $value)
@@ -45,9 +48,11 @@ class CalendarController extends Controller
                 }
             }
             DB::commit();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
         }
+
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
 }
