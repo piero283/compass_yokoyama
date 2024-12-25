@@ -22,7 +22,7 @@ class CalendarController extends Controller
 
     public function reserve(Request $request){
         $getPart = $request->getPart;
-        $getDate = $request->getData;
+        $getDate = $request->getDate;
 
         /* // 今日以降の日付のみを抽出
         $getDate = array_filter($getDate, function($date) {
@@ -30,7 +30,7 @@ class CalendarController extends Controller
            //!ReserveSettings::where('setting_reserve', $date)->exists();
         }); */
 
-        dd($getDate, $getPart);
+        //dd($getDate, $getPart);
 
         // 配列を結合
         $reserveDays = array_filter(array_combine($getDate, $getPart));
