@@ -56,8 +56,8 @@ class CalendarView{
           //過去日に予約がある場合　
           $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
           // hiddenフィールドを追加
-          $html[] = '<input type="hidden" name="getDate[]" value="' . $day->everyDay() . '">';
-          $html[] = '<input type="hidden" name="getPart[]" value="' . $reservePart . '">';
+          $html[] = '<input type="hidden" name="getDate[]" value="' . $day->everyDay() . '" form="reservePart">';
+          $html[] = '<input type="hidden" name="getPart[]" value="' . $reservePart . '" form="reservePart">';
 
           if($reservePart == 1){
             $reservePart = "リモ1部";
@@ -78,6 +78,7 @@ class CalendarView{
         }else {
             if($isPastDay) {
               // 過去日の処理
+              $html[] = '<input type="hidden" name="getPart[]" value="">';
               $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">受付終了</p>';
             }else{
                 // 未来日の処理

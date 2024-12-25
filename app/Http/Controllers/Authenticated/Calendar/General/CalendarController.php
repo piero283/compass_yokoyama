@@ -21,20 +21,15 @@ class CalendarController extends Controller
 
 
     public function reserve(Request $request){
-        $getDate = $request->input('getDate', []); // 全ての日付
-        $getPart = $request->input('getPart', []); // セレクトボックス選択分
+        $getPart = $request->getPart;
+        $getDate = $request->getData;
 
-        // 今日以降の日付のみを抽出
+        /* // 今日以降の日付のみを抽出
         $getDate = array_filter($getDate, function($date) {
-            return strtotime($date) >= strtotime(date('Y-m-d')); // 今日以降の日付
-        });
+            return strtotime($date) >= strtotime(date('Y-m-d')); //&&
+           //!ReserveSettings::where('setting_reserve', $date)->exists();
+        }); */
 
-        /* // 配列の要素数を揃える
-        if (count($getDate) > count($getPart)) {
-            $getDate = array_slice($getDate, 0, count($getPart));
-        } elseif (count($getPart) > count($getDate)) {
-            $getPart = array_slice($getPart, 0, count($getDate));
-        } */
         dd($getDate, $getPart);
 
         // 配列を結合
