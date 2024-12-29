@@ -71,8 +71,14 @@ class CalendarView{
 
           }else{
             // 現在または未来日の予約
-            $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate
-            ($day->everyDay())->first()->setting_reserve .'">' . $reservePart . '</button>';
+            $html[] = '<button type="button" class="btn btn-danger p-0 w-75"
+            data-bs-toggle="modal"
+            data-bs-target="#cancelModal"
+            data-reserve-date="' . $day->authReserveDate($day->everyDay())->first()->setting_reserve . '"
+            data-reserve-part="' . $reservePart . '"
+            name="delete_date"
+            value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'"
+            style="font-size:12px" >' . $reservePart . '</button>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
 
           }
