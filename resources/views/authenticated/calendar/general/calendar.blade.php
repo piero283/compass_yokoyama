@@ -18,14 +18,11 @@
   <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="cancelModalLabel">予約キャンセル確認</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
         <div class="modal-body">
-          <p>以下の予約をキャンセルしますか？</p>
           <p>予約日: <span id="modalReserveDate"></span></p>
-          <p>予約時間: <span id="modalReservePart"></span></p>
+          <p>時間: <span id="modalReservePart"></span></p>
+          <p>上記の予約をキャンセルしてもよろしいですか？</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>

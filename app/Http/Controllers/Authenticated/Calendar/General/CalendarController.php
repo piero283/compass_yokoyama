@@ -18,8 +18,6 @@ class CalendarController extends Controller
         return view('authenticated.calendar.general.calendar', compact('calendar'));
     }
 
-
-
     public function reserve(Request $request){
         $getPart = $request->getPart;
         $getDate = $request->getDate;
@@ -52,22 +50,18 @@ class CalendarController extends Controller
         DB::beginTransaction();
         try {
             $reserveDate = $request->input('reserve_date');
-
             // 予約情報を取得
             $reserveSetting = ReserveSettings::where('setting_reserve', $reserveDate)
                 ->whereHas('users', function ($query) {
                     $query->where('user_id', Auth::id());
                 })
                 ->first();
-
             if ($reserveSetting) {
                 // ユーザー予約を削除
                 $reserveSetting->users()->detach(Auth::id());
-
                 // 予約枠を増やす
                 $reserveSetting->increment('limit_users');
             }
-
             DB::commit();
             return redirect()->route('calendar.general.show', ['user_id' => Auth::id()])
                             ->with('success', '予約をキャンセルしました。');

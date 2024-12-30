@@ -46,9 +46,10 @@ class CalendarView{
         }else{
           $html[] = '<td class="border '.$day->getClassName().'">';
         }
-        $html[] = $day->render();
-        $html[] = $day->dayPartCounts($day->everyDay());
+        $html[] = $day->render();//日付を表示
+        $html[] = $day->dayPartCounts($day->everyDay());//各部の予約状況
         $html[] = '</td>';
+        //dd($day->dayPartCounts($day->everyDay())); //現状""と返ってくる
       }
       $html[] = '</tr>';
     }
