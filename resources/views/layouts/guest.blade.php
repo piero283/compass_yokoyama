@@ -16,7 +16,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Oswald:wght@200&display=swap" rel="stylesheet">
         <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     </head>
-    <body>
+    <body style="background-color:#ecf1f6;">
         {{ $slot }}
     </body>
 </html>

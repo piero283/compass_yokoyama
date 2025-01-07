@@ -1,7 +1,7 @@
 <x-guest-layout>
   <form action="{{ route('registerPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
-      <div class="w-25 vh-75 border p-3">
+      <div class="w-25 vh-75 border shadow p-3 register-box" style="background-color:#fff">
         <div class="register_form">
           <div class="d-flex mt-3" style="justify-content:space-between">
 
@@ -62,7 +62,7 @@
 
         </div>
 
-        <div class="mt-3">
+        <div class="mt-3 d-flex justify-content-between">
           <input type="radio" name="sex" class="sex" value="1">
           <label style="font-size:13px">男性</label>
           <input type="radio" name="sex" class="sex" value="2">
@@ -168,10 +168,10 @@
         <div class="select_teacher d-none">
           <label class="d-block m-0" style="font-size:13px">選択科目</label>
           @foreach($subjects as $subject)
-          <div class="">
-            <input type="checkbox" name="subject[]" value="{{ $subject->id }}">
-            <label>{{ $subjects->subject }}</label>
-          </div>
+            <div class="">
+              <input type="checkbox" name="subject[]" value="{{ $subject->id }}">
+              <label>{{ $subject->subject }}</label>
+            </div>
           @endforeach
         </div>
 
@@ -199,7 +199,7 @@
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>
         <div class="text-center">
-          <a href="{{ route('login') }}">ログイン</a>
+          <a href="{{ route('login') }}">ログインはこちら</a>
         </div>
       </div>
       {{ csrf_field() }}

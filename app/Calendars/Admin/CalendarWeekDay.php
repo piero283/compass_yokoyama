@@ -30,25 +30,25 @@ class CalendarWeekDay{
     $three_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
 
     $html[] = '<div class="text-left">';
-    if($one_part){
-      $remaining = $one_part->limit_users - $one_part->users->count();
+    if ($one_part) {
+        $reserved = $one_part->users->count(); // 予約済み人数
         $html[] = '<p class="day_part m-0 pt-1">
-        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 1]) .'" class="text-primary">1部</a>
-        <span class="ml-3">' . $remaining . '</span>
+        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 1]) . '" class="text-primary">1部</a>
+        <span class="ml-3">' . $reserved . '</span>
         </p>';
     }
-    if($two_part){
-        $remaining = $two_part->limit_users - $two_part->users->count();
+    if ($two_part) {
+        $reserved = $two_part->users->count(); // 予約済み人数
         $html[] = '<p class="day_part m-0 pt-1">
-        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 2]) .'" class="text-primary">2部</a>
-        <span class="ml-3">' . $remaining . '</span>
+        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 2]) . '" class="text-primary">2部</a>
+        <span class="ml-3">' . $reserved . '</span>
         </p>';
     }
-    if($three_part){
-        $remaining = $two_part->limit_users - $two_part->users->count();
+    if ($three_part) {
+        $reserved = $three_part->users->count(); // 予約済み人数
         $html[] = '<p class="day_part m-0 pt-1">
-        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 3]) .'" class="text-primary">3部</a>
-        <span class="ml-3">' . $remaining . '</span>
+        <a href="' . route('calendar.admin.detail', ['date' => $ymd, 'part' => 3]) . '" class="text-primary">3部</a>
+        <span class="ml-3">' . $reserved . '</span>
         </p>';
     }
     $html[] = '</div>';
