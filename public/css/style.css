@@ -22,8 +22,13 @@ li {
   border-radius: 10px;
 }
 
+/* 新規登録 */
 .register-box {
   border-radius: 10px;
+}
+/* 生年月日 */
+.old-year {
+  border-bottom: 1px solid #007bff;
 }
 
 /* サイドバー */
