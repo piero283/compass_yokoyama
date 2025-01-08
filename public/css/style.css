@@ -53,6 +53,12 @@ li {
   background: #FFF;
 }
 
+.page-title {
+  position: absolute;
+  margin: 10px;
+  font-size: 16px;
+}
+
 /* スクール予約関連 */
 .day-blank {
   background: #D3D3D3;
