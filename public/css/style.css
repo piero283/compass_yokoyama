@@ -59,6 +59,27 @@ li {
   font-size: 18px;
 }
 
+/* 掲示板 */
+.post-name {
+  color: #999999;
+}
+
+.category-box {
+  color: #FFF;
+  background-color: #3ea9d2;
+  border: 1px solid #3ea9d2;
+  border-radius: 10px;
+  padding: 3px;
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.category-box p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 /* スクール予約関連 */
 .day-blank {
   background: #D3D3D3;
