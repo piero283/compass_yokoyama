@@ -108,3 +108,25 @@ $(function () {
       });
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButtons = document.querySelectorAll(".toggle-btn");
+
+  toggleButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const subCategoryList = btn.nextElementSibling;
+      const arrow = btn.querySelector(".dli-chevron-down, .dli-chevron-up");
+
+      if (subCategoryList.classList.contains("d-none")) {
+        subCategoryList.classList.remove("d-none"); // サブカテゴリー表示
+        arrow.classList.remove("dli-chevron-down"); // 矢印を上向きに
+        arrow.classList.add("dli-chevron-up");
+      } else {
+        subCategoryList.classList.add("d-none"); // サブカテゴリー非表示
+        arrow.classList.remove("dli-chevron-up"); // 矢印を下向きに
+        arrow.classList.add("dli-chevron-down");
+      }
+    });
+  });
+});
+
