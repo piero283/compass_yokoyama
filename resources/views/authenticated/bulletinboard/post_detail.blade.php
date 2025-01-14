@@ -4,17 +4,22 @@
     <div class="m-3 detail_container">
       <div class="p-3">
         @if (Auth::id() === $post->user_id)
-          <div class="detail_inner_head">
-            <div>
+          <div class="detail_inner_head d-flex justify-content-between align-items-center">
+            <div class="category-box">
+              @if ($post->subCategories->isNotEmpty())
+                @foreach ($post->subCategories as $subCategory)
+                  <p>{{ $subCategory->sub_category }}</p>
+                @endforeach
+              @else
+                <p>サブカテゴリーはありません</p>
+              @endif
             </div>
             <div>
-              <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-              <a href="#" class="delete-modal-open" data-post_id="{{ $post->id }}">削除</a>
+              <span class="edit-modal-open edit-btn" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
+              <a href="#" class="delete-modal-open delete-btn" data-post_id="{{ $post->id }}">削除</a>
             </div>
           </div>
         @endif
-
-
         <!-- タイトルのエラーメッセージ -->
         @error('post_title')
           <span class="text-danger">{{ $message }}</span>
@@ -23,17 +28,8 @@
         @error('post_body')
           <span class="text-danger">{{ $message }}</span>
         @enderror
-        <div class="">
-          @if ($post->subCategories->isNotEmpty())
-            @foreach ($post->subCategories as $subCategory)
-              <p>{{ $subCategory->sub_category }}</p>
-            @endforeach
-          @else
-            <p>サブカテゴリーはありません</p>
-          @endif
-        </div>
         <div class="contributor d-flex">
-          <p>
+          <p class="mt-3" style="font-size: 14px";>
             <span>{{ $post->user->over_name }}</span>
             <span>{{ $post->user->under_name }}</span>
             さん
@@ -42,18 +38,16 @@
         </div>
         <div class="detsail_post_title">{{ $post->post_title }}</div>
         <div class="mt-3 detsail_post">{{ $post->post }}</div>
-      </div>
-      <div class="p-3">
-        <div class="comment_container">
+        <div class="comment_container mt-3">
           <span class="">コメント</span>
           @foreach($post->postComments as $comment)
-          <div class="comment_area border-top">
-            <p>
-              <span>{{ $comment->commentUser($comment->user_id)->over_name }}</span>
-              <span>{{ $comment->commentUser($comment->user_id)->under_name }}</span>さん
-            </p>
-            <p>{{ $comment->comment }}</p>
-          </div>
+            <div class="comment_area border-top">
+              <p>
+                <span>{{ $comment->commentUser($comment->user_id)->over_name }}</span>
+                <span>{{ $comment->commentUser($comment->user_id)->under_name }}</span>さん
+              </p>
+              <p>{{ $comment->comment }}</p>
+            </div>
           @endforeach
         </div>
       </div>
@@ -66,9 +60,11 @@
             <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
           @enderror
           <p class="m-0">コメントする</p>
-          <textarea class="w-100" name="comment" form="commentRequest"></textarea>
+          <textarea class="w-100" name="comment" form="commentRequest" style="border: 1px solid rgba(204, 204, 204, 0.5);";></textarea>
           <input type="hidden" name="post_id" form="commentRequest" value="{{ $post->id }}">
-          <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">
+          <div class="text-right">
+            <input type="submit" class="btn btn-primary mt-2" form="commentRequest" value="投稿">
+          </div>
           <form action="{{ route('comment.create') }}" method="post" id="commentRequest">{{ csrf_field() }}</form>
         </div>
       </div>
@@ -79,11 +75,12 @@
   <div class="modal__content">
     <form action="{{ route('post.edit') }}" method="post">
       <div class="w-100">
-        <div class="modal-inner-title w-50 m-auto">
-          <input type="text" name="post_title" placeholder="タイトル" class="w-100">
+        <div class="modal-inner-title w-50 m-auto p-0" style="border: 1px solid rgba(204, 204, 204, 0.5)";
+>
+          <input type="text" name="post_title" placeholder="タイトル" class="w-100 no-border">
         </div>
         <div class="modal-inner-body w-50 m-auto pt-3 pb-3">
-          <textarea placeholder="投稿内容" name="post_body" class="w-100"></textarea>
+          <textarea placeholder="投稿内容" name="post_body" class="w-100 no-border"></textarea>
         </div>
         <div class="w-50 m-auto edit-modal-btn d-flex">
           <a class="js-modal-close btn btn-danger d-inline-block" href="">閉じる</a>
