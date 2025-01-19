@@ -488,10 +488,26 @@ li {
 
 .subject_edit_btn {
   font-size: 12px;
+  align-items: center;
   color: #0000FF;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .subject_inner {
   display: none;
 }
+
+.subject_list_container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.subject_item {
+  align-items: center;
+  gap: 5px;
+}
+
+

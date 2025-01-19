@@ -7,3 +7,24 @@ $(function () {
     $('.subject_inner').slideToggle();
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.querySelector(".subject_edit_btn");
+  const arrow = toggleButton.querySelector(".arrow-icon");
+  const content = document.querySelector(".subject_inner");
+
+  
+
+  toggleButton.addEventListener("click", () => {
+    content.classList.toggle("d-none");
+
+    if (content.classList.contains("d-none")) {
+      arrow.classList.remove("dli-chevron-up");
+      arrow.classList.add("dli-chevron-down");
+    } else {
+      arrow.classList.remove("dli-chevron-down");
+      arrow.classList.add("dli-chevron-up");
+    }
+  });
+});
