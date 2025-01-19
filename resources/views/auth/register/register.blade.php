@@ -59,20 +59,19 @@
                 <span class="text-danger" style="font-size:12px;">{{ $message }}</span>
               @enderror
           </div>
-
         </div>
 
         <div class="mt-3 d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center mx-3">
-            <input type="radio" name="sex" class="mx-2 mb-2" value="1">
+            <input type="radio" name="sex" class="sex mx-2 mb-2" value="1">
             <label style="font-size:13px">男性</label>
           </div>
           <div class="d-flex align-items-center">
-            <input type="radio" name="sex" class="mx-2 mb-2" value="2">
+            <input type="radio" name="sex" class="sex mx-2 mb-2" value="2">
             <label style="font-size:13px">女性</label>
           </div>
           <div class="d-flex align-items-center mx-4">
-            <input type="radio" name="sex" class="mx-2 mb-2" value="3">
+            <input type="radio" name="sex" class="sex mx-2 mb-2" value="3">
             <label style="font-size:13px">その他</label>
           </div>
         </div>

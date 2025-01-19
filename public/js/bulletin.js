@@ -109,9 +109,9 @@ $(function () {
   });
 });
 
+/* カテゴリー検索の矢印 */
 document.addEventListener("DOMContentLoaded", () => {
   const toggleButtons = document.querySelectorAll(".toggle-btn");
-
   toggleButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const subCategoryList = btn.nextElementSibling;
@@ -130,3 +130,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/* 検索条件の追加矢印 */
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.querySelector(".search_conditions");
+  const arrow = toggleButton.querySelector(".dli-chevron-down");
+  const content = document.querySelector(".search_conditions_inner");
+
+  toggleButton.addEventListener("click", () => {
+    content.classList.toggle("d-none"); // コンテンツの表示/非表示
+
+    if (content.classList.contains("d-none")) {
+      arrow.classList.remove("dli-chevron-up");
+      arrow.classList.add("dli-chevron-down"); // 矢印を下向きに
+    } else {
+      arrow.classList.remove("dli-chevron-down");
+      arrow.classList.add("dli-chevron-up"); // 矢印を上向きに
+    }
+  });
+});

@@ -96,6 +96,22 @@ $(function () {
     } else {
       $('.register_btn').prop('disabled', true);
     }
+
+    console.log({
+      over_name: $('.over_name').hasClass('success_name'),
+      over_name_kana: $('.over_name_kana').hasClass('success_name_kana'),
+      under_name: $('.under_name').hasClass('success_under_name'),
+      under_name_kana: $('.under_name_kana').hasClass('success_under_name_kana'),
+      mail_address: $('.mail_address').hasClass('success_mail_address'),
+      password: $('.password').hasClass('success_password'),
+      password_confirm: $('.password_confirmation').hasClass('success_password_confirm'),
+      sex: $('.sex').hasClass('success_sex'),
+      old_year: $('.old_year').hasClass('success_year'),
+      old_month: $('.old_month').hasClass('success_month'),
+      old_day: $('.old_day').hasClass('success_day'),
+      role: $('.role').hasClass('success_role')
+    });
+
   });
 
 })
